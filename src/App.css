@@ -1,0 +1,13 @@
+.cron-ui {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+.custom-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0px;
+  row-gap: 30px;
+  justify-items: center;
+}
