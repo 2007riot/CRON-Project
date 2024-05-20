@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import "./App.css";
 import Macros from "./components/Macros";
 import Custom from "./components/Custom";
@@ -10,12 +10,13 @@ function App() {
     cron,
     handleCronChange,
     handleLoadInterface,
+    save
   }: GlobalStateContextType = useContext(GlobalContext);
-
   return (
     <div className="cron-ui">
       <Macros />
       <Custom />
+      <Button sx={{ m: "auto", width: 200 }} onClick={save} >Save</Button>
       <TextField
         sx={{ m: "auto", width: "30%" }}
         size="medium"

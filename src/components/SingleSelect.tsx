@@ -4,17 +4,22 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-
+import { Checkbox, FormControlLabel } from '@mui/material';
+import { useState } from 'react';
 
 interface SingleSelectProps {
   value: string[]
+  valueName: string
   handleChange: (event: SelectChangeEvent<string>) => void
+  handleCheckChange:(event: React.ChangeEvent<HTMLInputElement>)=>void
   arrayOfOptions: string[] | number[]
   label: string
   startsFromZero: boolean
+  isChecked: boolean
 }
 
-const SingleSelect: React.FC<SingleSelectProps> = ({value, handleChange,arrayOfOptions,label,startsFromZero}) => {
+const SingleSelect: React.FC<SingleSelectProps> = ({value, valueName, handleChange,isChecked,handleCheckChange, arrayOfOptions,label,startsFromZero}) => {
+
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -32,7 +37,13 @@ const SingleSelect: React.FC<SingleSelectProps> = ({value, handleChange,arrayOfO
         ))}
         </Select>
       </FormControl>
+
+      <FormControlLabel  control={<Checkbox checked={isChecked} onChange={handleCheckChange}  />} label={`Repeat `} />
+      {/* every ${value[0]}th ${valueName} */}
+
+
     </Box>
+
   )
 }
 

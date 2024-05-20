@@ -11,7 +11,19 @@ export default function Custom() {
     hour, handleHourChange,
     dayOfTheMonth, handleDayOfTheMonthChange,
     month, handleMonthChange,
-    dayOfTheWeek, handleDayOfTheWeekChange
+    dayOfTheWeek, handleDayOfTheWeekChange,
+    isNmin, handleNMinChange,
+        isNHour,
+        isNDayOfTheMonth,
+        isNMonth,
+        isNDayOfTheWeek,
+
+
+        handleNHourChange,
+        handleNDayOfTheMonthChange,
+        handleNMonthChange,
+        handleNDayOfTheWeekChange,
+
   }: GlobalStateContextType = useContext(GlobalContext)
 
   const minutes = [...Array(60).keys()].map((i) => i )
@@ -39,8 +51,7 @@ export default function Custom() {
             handleChange={handleMinuteChange}
             arrayOfOptions={minutes}
             label={"Set minute"}
-            startsFromZero={true}         
-             />
+            startsFromZero={true} valueName={"minute"} handleCheckChange={handleNMinChange} isChecked={isNmin}             />
           <MultiSelectComponent
             value={minute}
             handleChange={handleMinuteChange}
@@ -54,8 +65,7 @@ export default function Custom() {
             handleChange={handleHourChange}
             arrayOfOptions={hours}
             label={"Set hour"}
-            startsFromZero={true}       
-             />
+            startsFromZero={true} valueName={"hour"} handleCheckChange={handleNHourChange} isChecked={isNHour} />
           <MultiSelectComponent
             value={hour}
             handleChange={handleHourChange}
@@ -68,8 +78,7 @@ export default function Custom() {
             handleChange={handleDayOfTheMonthChange}
             arrayOfOptions={daysOfTheMonth}
             label={"Set day of the month"}
-            startsFromZero={false}
-          />
+            startsFromZero={false} valueName={"day"} handleCheckChange={handleNDayOfTheMonthChange} isChecked={isNDayOfTheMonth}          />
           <MultiSelectComponent
             value={dayOfTheMonth}
             handleChange={handleDayOfTheMonthChange}
@@ -82,8 +91,7 @@ export default function Custom() {
             handleChange={handleMonthChange}
             arrayOfOptions={months}
             label={"Set month"}
-            startsFromZero={false}
-          />
+            startsFromZero={false} valueName={"month"} handleCheckChange={handleNMonthChange} isChecked={isNMonth}          />
           <MultiSelectComponent
             value={month}
             handleChange={handleMonthChange}
@@ -97,8 +105,7 @@ export default function Custom() {
             handleChange={handleDayOfTheWeekChange}
             arrayOfOptions={weekdays}
             label={"Set day of the week"}
-            startsFromZero={false}
-          />
+            startsFromZero={false} valueName={"weekday"} handleCheckChange={handleNDayOfTheWeekChange} isChecked={isNDayOfTheWeek}          />
           <MultiSelectComponent
             value={dayOfTheWeek}
             handleChange={handleDayOfTheWeekChange}

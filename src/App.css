@@ -6,8 +6,7 @@
 
 .custom-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 0px;
+  grid-template-columns: 2.3fr  2fr; 
   row-gap: 30px;
   justify-items: center;
 }
