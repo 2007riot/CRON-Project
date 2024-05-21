@@ -8,11 +8,6 @@ import React, {
 import { SelectChangeEvent } from "@mui/material";
 
 import {
-  custom,
-  daily,
-  hourly,
-  monthly,
-  weekly,
   yearly,
 } from "../constants/constants";
 
@@ -25,13 +20,8 @@ interface CronUpdateParams {
 }
 
 export interface GlobalStateContextType {
-  handleRadioChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  isHourly: boolean;
-  isDaily: boolean;
-  isWeekly: boolean;
-  isMonthly: boolean;
-  isYearly: boolean;
-  isCustom: boolean;
+  handleSelectorChange: (event: SelectChangeEvent) => void;
+  selection: string
   cron: string[];
   updateCron: (params: CronUpdateParams) => void;
   minute: string[];
@@ -73,13 +63,10 @@ type GlobalStateProps = {
 };
 
 export const GlobalContext = createContext<GlobalStateContextType>({
-  handleRadioChange: () => {},
-  isHourly: false,
-  isDaily: false,
-  isWeekly: false,
-  isMonthly: false,
-  isYearly: false,
-  isCustom: false,
+
+  handleSelectorChange:() => {},
+  selection: yearly,
+
   cron: [],
   updateCron: () => {},
   minute: [],
@@ -111,12 +98,8 @@ export const GlobalContext = createContext<GlobalStateContextType>({
 });
 
 export default function GlobalState({ children }: GlobalStateProps) {
-  const [isHourly, setIsHourly] = useState<boolean>(false);
-  const [isDaily, setIsDaily] = useState<boolean>(false);
-  const [isWeekly, setIsWeekly] = useState<boolean>(false);
-  const [isMonthly, setIsMonthly] = useState<boolean>(false);
-  const [isYearly, setIsYearly] = useState<boolean>(false);
-  const [isCustom, setIsCustom] = useState<boolean>(false);
+  const [selection, setSelection] = React.useState('');
+  
   const [cron, setCron] = useState<string[]>([]);
   const [minute, setMinute] = useState<string[]>([]);
   const [hour, setHour] = useState<string[]>([]);
@@ -128,18 +111,11 @@ export default function GlobalState({ children }: GlobalStateProps) {
   const [isNDayOfTheMonth, setIsNDayOfTheMonth] = useState<boolean>(false);
   const [isNMonth, setIsNMontd] = useState<boolean>(false);
   const [isNDayOfTheWeek, setIsNDayOfTheWeek] = useState<boolean>(false);
-  // useEffect(() => {
-  //   updateCron({
-  //     hour: hour,
-  //     minute: minute,
-  //     dayOfTheMonth: dayOfTheMonth,
-  //     month: month,
-  //     daysOfTheWeek: dayOfTheWeek,
-  //   });
-  // }, [hour, minute, dayOfTheMonth, month, dayOfTheWeek],);
 
+  const handleSelectorChange = (event: SelectChangeEvent) => {
+    setSelection(event.target.value as string);
+  }
   function handleCronChange(e: ChangeEvent<HTMLInputElement>) {
-    // e.preventDefault
     const value = e.target.value;
     const arrayOfvalues = value.split(" ");
     setCron(arrayOfvalues);
@@ -153,20 +129,6 @@ export default function GlobalState({ children }: GlobalStateProps) {
     return regex.test(string)
   }
 
-//   function handleNPattern(value: string[], stateSetter: (values: string[]) => void, isNStateSetter: (isChecked: boolean) => void, pattern = /^\*\//): boolean {
-//   const hasNpattern = pattern.test(value[0]);
-
-//   if (hasNpattern) {
-//     isNStateSetter(true);
-//     const strWTpattern = value[0].slice(2);
-//     stateSetter(strWTpattern.split(",")); 
-//   } else {
-//     isNStateSetter(false);
-//     stateSetter(value); 
-//   }
-
-//   return hasNpattern; 
-// }
 
   function save () {
     updateCron({minute:minute,hour:hour,dayOfTheMonth:dayOfTheMonth,month:month,daysOfTheWeek:dayOfTheWeek})
@@ -174,13 +136,7 @@ export default function GlobalState({ children }: GlobalStateProps) {
 
   function handleLoadInterface (event: React.MouseEvent<HTMLButtonElement>) {
 
-    setIsHourly(false);
-    setIsDaily(false);
-    setIsWeekly(false);
-    setIsMonthly(false);
-    setIsYearly(false);
-    setIsCustom(true);
-    // console.log(cron)
+    setSelection(yearly)
     const [minute, hour, dayOfTheMonth, month, weekDay] = cron;
 
     console.log("cron minute: " + minute);
@@ -188,18 +144,12 @@ export default function GlobalState({ children }: GlobalStateProps) {
     console.log("cron day of the month: " + dayOfTheMonth);
     console.log("cron month: " + month);
     console.log("cron week day: " + weekDay);
-
-    // setMinute(minute.split(","));
-    // setHour(hour.split(","));
-    // setDayOfTheMonth(dayOfTheMonth.split(","));
-    // setMonth(month.split(","));
-    // setDayOfTheWeek(weekDay.split(","));
     
     console.log(hasNpattern(minute));
 
     // handleNPattern(minute,setIsNmin,)
 
-    //think about it more
+    //think about it more, very repetative
     if (hasNpattern(minute)) {
       setIsNmin(true);
       const strWTpattern = minute.slice(2);
@@ -286,22 +236,7 @@ export default function GlobalState({ children }: GlobalStateProps) {
     console.log(values);
   }
 
-  //TODO generic function as well
-  // function handleNMinChange(event: ChangeEvent<HTMLInputElement>) {
-  //   const isChecked = event.target.checked;
-  //   setIsNmin(isChecked);
-  //   //cron should updates here??
-  //   // if (isChecked && minute.length === 1)  {
-  //   //   //thiiiiink
-  //   //   updateCron({minute:[`*/${minute}`]});
-  //   // } 
-  //   // else {
-  //   //   updateCron({minute:minute});
-  //   // }
-  //   console.log(minute);
-  // }
-
-
+  //Also too repetative, think about how to handle this logic differently, maybe add another dropdown instead of checkbox
   function handleNMinChange(event: ChangeEvent<HTMLInputElement>) {
     const isChecked = event.target.checked;
     setIsNmin(isChecked);
@@ -325,68 +260,6 @@ export default function GlobalState({ children }: GlobalStateProps) {
   function handleNDayOfTheWeekChange(event: ChangeEvent<HTMLInputElement>) {
     const isChecked = event.target.checked;
     setIsNDayOfTheWeek(isChecked);
-  }
-
-  function handleRadioChange(e: ChangeEvent<HTMLInputElement>): void {
-    const { name, checked } = e.target;
-    switch (name) {
-      case hourly:
-        setIsHourly(checked);
-        setIsDaily(false);
-        setIsWeekly(false);
-        setIsMonthly(false);
-        setIsYearly(false);
-        setIsCustom(false);
-        setCron(["0", "*", "*", "*", "*"]);
-        break;
-      case daily:
-        setIsHourly(false);
-        setIsDaily(checked);
-        setIsWeekly(false);
-        setIsMonthly(false);
-        setIsYearly(false);
-        setIsCustom(false);
-        setCron(["0", "0", "*", "*", "*"]);
-        break;
-      case weekly:
-        setIsHourly(false);
-        setIsDaily(false);
-        setIsWeekly(checked);
-        setIsMonthly(false);
-        setIsYearly(false);
-        setIsCustom(false);
-        setCron(["0", "0", "*", "*", "0"]);
-        break;
-      case monthly:
-        setIsHourly(false);
-        setIsDaily(false);
-        setIsWeekly(false);
-        setIsMonthly(checked);
-        setIsYearly(false);
-        setIsCustom(false);
-        setCron(["0", "0", "1", "*", "*"]);
-        break;
-      case yearly:
-        setIsHourly(false);
-        setIsDaily(false);
-        setIsWeekly(false);
-        setIsMonthly(false);
-        setIsYearly(checked);
-        setIsCustom(false);
-        setCron(["0", "0", "1", "1", "*"]);
-        break;
-      case custom:
-        setIsHourly(false);
-        setIsDaily(false);
-        setIsWeekly(false);
-        setIsMonthly(false);
-        setIsYearly(false);
-        setIsCustom(checked);
-        setCron(["*", "*", "*", "*", "*"]);
-        break;
-      default:
-        break;
-    }
   }
 
   function retriveCron(
@@ -414,10 +287,6 @@ export default function GlobalState({ children }: GlobalStateProps) {
   function updateCron(params: CronUpdateParams): void {
     const newCron: string[] = [
       retriveCron(params.minute, isNmin),
-      // retriveCron(params.hour, isNHour),
-      // retriveCron(params.dayOfTheMonth, isNDayOfTheMonth),
-      // retriveCron(params.month, isNMonth),
-      // retriveCron(params.daysOfTheWeek, isNDayOfTheWeek),
       retriveCron(params.hour, isNHour),
       retriveCron(params.dayOfTheMonth, isNDayOfTheMonth),
       retriveCron(params.month, isNMonth),
@@ -430,15 +299,10 @@ export default function GlobalState({ children }: GlobalStateProps) {
   return (
     <GlobalContext.Provider
       value={{
-        isHourly,
-        handleRadioChange,
-        isDaily,
-        isWeekly,
-        isMonthly,
-        isYearly,
+        handleSelectorChange,
+        selection,
         cron,
         updateCron,
-        isCustom,
         minute,
         hour,
         month,
@@ -457,8 +321,6 @@ export default function GlobalState({ children }: GlobalStateProps) {
         isNDayOfTheMonth,
         isNMonth,
         isNDayOfTheWeek,
-
-
         handleNMinChange,
         handleNHourChange,
         handleNDayOfTheMonthChange,

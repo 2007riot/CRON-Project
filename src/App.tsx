@@ -1,22 +1,35 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import "./App.css";
-import Macros from "./components/Macros";
-import Custom from "./components/Custom";
 import { GlobalContext, GlobalStateContextType } from "./context/Context";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
+import Selector from "./components/Selector";
+import Minute from "./components/Minute";
+import Weekday from "./components/Weekday";
+import MonthDay from "./components/MonthDay";
+import Hour from "./components/Hour";
+import Month from "./components/Month";
 
 function App() {
   const {
     cron,
     handleCronChange,
     handleLoadInterface,
-    save
+    save,
   }: GlobalStateContextType = useContext(GlobalContext);
+
   return (
     <div className="cron-ui">
-      <Macros />
-      <Custom />
-      <Button sx={{ m: "auto", width: 200 }} onClick={save} >Save</Button>
+      <Box sx={{ fontSize: "28px" }}>CRON Schedule</Box>
+      <Selector />
+
+      <Minute />
+      <Hour />
+      <Weekday />
+      <MonthDay />
+      <Month />
+      <Button sx={{ m: "auto", width: 200 }} variant="contained" onClick={save}>
+        Save
+      </Button>
       <TextField
         sx={{ m: "auto", width: "30%" }}
         size="medium"
@@ -25,7 +38,13 @@ function App() {
         label={"Cron string"}
         onChange={handleCronChange}
       />
-      <Button sx={{ m: "auto", width: 200 }} onClick={handleLoadInterface} >Load interface</Button>
+      <Button
+        sx={{ m: "auto", width: 200 }}
+        variant="contained"
+        onClick={handleLoadInterface}
+      >
+        Load
+      </Button>
       {/* <p>Your cron code: {cron.join(" ")}</p> */}
     </div>
   );
