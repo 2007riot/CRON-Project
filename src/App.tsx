@@ -15,6 +15,8 @@ function App() {
     handleCronChange,
     handleLoadInterface,
     save,
+    isValidCron,
+    errorMsg,
   }: GlobalStateContextType = useContext(GlobalContext);
 
   return (
@@ -31,6 +33,8 @@ function App() {
         Save
       </Button>
       <TextField
+      error = {!isValidCron()}
+      helperText = {isValidCron() ? "" :errorMsg }
         sx={{ m: "auto", width: "30%" }}
         size="medium"
         id="filled-basic"
@@ -42,6 +46,7 @@ function App() {
         sx={{ m: "auto", width: 200 }}
         variant="contained"
         onClick={handleLoadInterface}
+        disabled = {!isValidCron()}
       >
         Load
       </Button>

@@ -8,8 +8,6 @@ import React, {
 import { SelectChangeEvent } from "@mui/material";
 
 import {
-  daily,
-  hourly,
   yearly,
 } from "../constants/constants";
 
@@ -58,6 +56,9 @@ export interface GlobalStateContextType {
   isNDayOfTheMonth: boolean;
   isNMonth: boolean;
   isNDayOfTheWeek: boolean;
+
+  isValidCron: () => boolean
+  errorMsg: string
 }
 
 type GlobalStateProps = {
@@ -97,12 +98,15 @@ export const GlobalContext = createContext<GlobalStateContextType>({
   isNMonth: false,
   isNDayOfTheWeek: false,
   save: ()=>{},
+  isValidCron: () => true,
+  errorMsg: ""
+  
 });
 
 export default function GlobalState({ children }: GlobalStateProps) {
   const [selection, setSelection] = React.useState('');
   
-  const [cron, setCron] = useState<string[]>([]);
+  const [cron, setCron] = useState<string[]>(["*","*","*","*","*"]);
   const [minute, setMinute] = useState<string[]>([]);
   const [hour, setHour] = useState<string[]>([]);
   const [dayOfTheMonth, setDayOfTheMonth] = useState<string[]>([]);
@@ -113,7 +117,18 @@ export default function GlobalState({ children }: GlobalStateProps) {
   const [isNDayOfTheMonth, setIsNDayOfTheMonth] = useState<boolean>(false);
   const [isNMonth, setIsNMontd] = useState<boolean>(false);
   const [isNDayOfTheWeek, setIsNDayOfTheWeek] = useState<boolean>(false);
+  const [errorMsg, setErrorMsg] = useState<string>("")
 
+
+  function isValidCron () : boolean {
+
+  
+  const cronRE: RegExp = /^((?:\*|[0-5]?[0-9](?:(?:-[0-5]?[0-9])|(?:,[0-5]?[0-9])+)?)(?:\/[0-9]+)?)\s+((?:\*|(?:1?[0-9]|2[0-3])(?:(?:-(?:1?[0-9]|2[0-3]))|(?:,(?:1?[0-9]|2[0-3]))+)?)(?:\/[0-9]+)?)\s+((?:\*|(?:[1-9]|[1-2][0-9]|3[0-1])(?:(?:-(?:[1-9]|[1-2][0-9]|3[0-1]))|(?:,(?:[1-9]|[1-2][0-9]|3[0-1]))+)?)(?:\/[0-9]+)?)\s+((?:\*|(?:[1-9]|1[0-2])(?:(?:-(?:[1-9]|1[0-2]))|(?:,(?:[1-9]|1[0-2]))+)?)(?:\/[0-9]+)?)\s+((?:\*|[0-7](?:-[0-7]|(?:,[0-7])+)?)(?:\/[0-9]+)?)$/
+  
+
+  return cronRE.test(cron.join(" "))
+    
+  }
   const handleSelectorChange = (event: SelectChangeEvent) => {
     setSelection(event.target.value as string);
     //reset all values on selector change
@@ -133,8 +148,10 @@ export default function GlobalState({ children }: GlobalStateProps) {
     const arrayOfvalues = value.split(" ");
     setCron(arrayOfvalues);
     console.log(cron);
-    //here need to add validation 
-    
+
+    if (!isValidCron()) {
+      setErrorMsg("Invalid cron string")
+    } 
   }
 
   function hasNpattern(string:string):boolean {
@@ -147,7 +164,7 @@ export default function GlobalState({ children }: GlobalStateProps) {
     updateCron({minute:minute,hour:hour,dayOfTheMonth:dayOfTheMonth,month:month,daysOfTheWeek:dayOfTheWeek})
   }
 
-  function handleLoadInterface (event: React.MouseEvent<HTMLButtonElement>) {
+  function handleLoadInterface () {
 
     setSelection(yearly)
     const [minute, hour, dayOfTheMonth, month, weekDay] = cron;
@@ -339,6 +356,8 @@ export default function GlobalState({ children }: GlobalStateProps) {
         handleNDayOfTheMonthChange,
         handleNMonthChange,
         handleNDayOfTheWeekChange,
+        isValidCron,
+        errorMsg
       }}
     >
       {children}
