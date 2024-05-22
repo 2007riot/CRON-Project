@@ -8,6 +8,8 @@ import React, {
 import { SelectChangeEvent } from "@mui/material";
 
 import {
+  daily,
+  hourly,
   yearly,
 } from "../constants/constants";
 
@@ -114,6 +116,17 @@ export default function GlobalState({ children }: GlobalStateProps) {
 
   const handleSelectorChange = (event: SelectChangeEvent) => {
     setSelection(event.target.value as string);
+    //reset all values on selector change
+    setMinute(["*"])
+    setHour(["*"])
+    setDayOfTheWeek(["*"])
+    setMonth(["*"])
+    setDayOfTheMonth(["*"])
+    setIsNmin(false)
+    setIsNHour(false)
+    setIsNDayOfTheWeek(false)
+    setIsNDayOfTheMonth(false)
+    setIsNMontd(false)
   }
   function handleCronChange(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
