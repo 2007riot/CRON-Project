@@ -5,3 +5,8 @@
     align-items: center;
   }
 
+  .item-container {
+    display: flex;
+    flex-direction: row;
+    gap: 150px
+  }

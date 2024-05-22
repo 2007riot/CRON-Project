@@ -32,7 +32,7 @@ export default function Month() {
   const isDisplay = index > 3;
   return (
     isDisplay && (
-      <div>
+      <div className="item-container">
         <SingleSelect
           value={month}
           handleChange={handleMonthChange}

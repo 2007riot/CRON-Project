@@ -20,7 +20,7 @@ export default function Hour() {
 
   return (
     isDisplay && (
-      <div>
+      <div className="item-container">
         <SingleSelect
           value={hour}
           handleChange={handleHourChange}

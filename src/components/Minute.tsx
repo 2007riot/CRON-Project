@@ -13,7 +13,7 @@ export default function Minute() {
   }: GlobalStateContextType = useContext(GlobalContext);
 
   return (
-    <div>
+    <div className="item-container">
       <SingleSelect
         value={minute}
         handleChange={handleMinuteChange}

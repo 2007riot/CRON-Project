@@ -37,9 +37,10 @@ const MultiSelectComponent: React.FC<MultiSelectProps> = ({
               <Chip
                 key={value}
                 label={ 
-                  value === "*"
-                    ? "Any"
-                    : startsFromZero ? value : arrayOfOptions[parseInt(value) - 1]
+                  // value === "*"
+                  //   ? ""
+                  //   : 
+                    startsFromZero ? value : arrayOfOptions[parseInt(value) - 1]
                 }
               />
             )) : <InputLabel>{label}</InputLabel>}

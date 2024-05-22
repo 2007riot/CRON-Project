@@ -45,8 +45,8 @@ const SingleSelect: React.FC<SingleSelectProps> = ({
       </FormControl>
 
       <FormControlLabel
-        control={<Checkbox checked={isChecked} onChange={handleCheckChange} />}
-        label={`Repeat `}
+        control={<Checkbox checked={value.length ===1 ? isChecked : false} onChange={handleCheckChange} />}
+        label={isChecked && value.length === 1 ? `Repeat Every ${value} ${valueName}` : "Make repetative"}
       />
     </Box>
   );

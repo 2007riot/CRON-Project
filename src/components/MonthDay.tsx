@@ -19,7 +19,7 @@ export default function MonthDay() {
   const isDisplay = index > 2;
   return (
     isDisplay && (
-      <div>
+      <div className="item-container">
         <SingleSelect
           value={dayOfTheMonth}
           handleChange={handleDayOfTheMonthChange}
